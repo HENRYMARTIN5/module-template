@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source env/bin/activate
+
+echo "Running black..."
+black --exclude env . --line-length 120
+echo "Running isort..."
+isort . -s env
+echo "Fixing implicit optional..."
+no_implicit_optional {MODULE}
+echo "Generating docs..."
+pdoc3 {MODULE} --html -o docs --force --template-dir docs/templates
+echo "Checking code quality..."
+mypy {MODULE}
+radon cc {MODULE}
+pytest -lvv

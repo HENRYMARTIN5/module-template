@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+env/bin/python check_debug.py
+
+rm -rf build
+rm -rf dist
+rm -rf {MODULE}.egg-info
+
+env/bin/python -m build
+
+rm -rf build
+rm -rf {MODULE}.egg-info
