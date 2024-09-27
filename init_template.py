@@ -4,16 +4,24 @@ from datetime import datetime
 
 
 def replace_in_file(file_path: str, old_string: str, new_string: str):
-    with fileinput.input(file_path, inplace=True) as file:
-        for line in file:
-            print(line.replace(old_string, new_string), end='')
+    try:
+        with fileinput.input(file_path, inplace=True) as file:
+            for line in file:
+                print(line.replace(old_string, new_string), end='')
+    except UnicodeDecodeError:
+        print("Failed to replace in " + file_path)
 
 def replace_in_directory(directory: str, old_string: str, new_string: str):
     for root, dirs, files in os.walk(directory):
         for file in files:
-            if "init_template.py" in file:
-                continue
             file_path = os.path.join(root, file)
+            exclude = ["__pycache__", ".git", "init_template.py", "env", "cache", "logs"]
+            should_continue = False
+            for ex in exclude:
+                if ex in file_path:
+                    should_continue = True
+            if should_continue:
+                continue
             replace_in_file(file_path, old_string, new_string)
 
 def main() -> int:
