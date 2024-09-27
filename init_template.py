@@ -35,7 +35,9 @@ def main() -> int:
     replace_in_directory(".", "{YEAR}", year)
     replace_in_directory(".", "{AUTHOR_EMAIL}", author_email)
     replace_in_directory(".", "{AUTHOR_NAME}", author_name)
-    print("Success!")
+    os.rename("newmodule", module)
+    os.remove(os.path.abspath(__file__))
+    print("This script has deleted itself, and your new module is ready for use!")
     return 0
 
 if __name__ == "__main__":
